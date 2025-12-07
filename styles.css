@@ -1,0 +1,593 @@
+/* ===========================
+   GLOBAL STYLES
+   =========================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.app-shell {
+    overflow: hidden;
+}
+
+/* ===========================
+   SIDEBAR STYLES
+   =========================== */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 260px;
+    height: 100vh;
+    background: linear-gradient(180deg, #ea580c 0%, #dc2626 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+.sidebar-header {
+    padding: 1.5rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-box {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ea580c;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.btn-close-sidebar {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 0;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: white;
+    text-decoration: none;
+    transition: background 0.2s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+}
+
+.nav-link:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+.nav-link.active {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.nav-link i {
+    font-size: 1.1rem;
+    margin-right: 0.75rem;
+    width: 20px;
+}
+
+.nav-link.dropdown-toggle::after {
+    margin-left: auto;
+}
+
+.sub-link {
+    padding-left: 3rem;
+    font-size: 0.9rem;
+}
+
+.nav-section {
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.user-name {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.user-level {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* ===========================
+   MAIN CONTENT STYLES
+   =========================== */
+.main-content {
+    margin-left: 260px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-area {
+    flex: 1;
+    overflow: auto;
+    position: relative;
+}
+
+#contentFrame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+/* ===========================
+   MATERI PAGE STYLES
+   =========================== */
+.materi-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.materi-header {
+    background: linear-gradient(135deg, #ea580c 0%, #dc2626 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.materi-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.materi-meta {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.materi-meta i {
+    margin-right: 0.5rem;
+}
+
+.materi-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.materi-content h2 {
+    color: #ea580c;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.materi-content h3 {
+    color: #dc2626;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.2rem;
+}
+
+.materi-content p {
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    color: #4b5563;
+}
+
+.materi-content ul,
+.materi-content ol {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+}
+
+.materi-content li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+/* Code Block Styles */
+.code-block {
+    background: #1f2937;
+    color: #e5e7eb;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    position: relative;
+}
+
+.code-block pre {
+    margin: 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.code-block code {
+    color: #10b981;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.copy-btn:hover {
+    background: #2563eb;
+}
+
+/* Alert Boxes */
+.alert-info-custom {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+}
+
+.alert-warning-custom {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+}
+
+.alert-success-custom {
+    background: #f0fdf4;
+    border-left: 4px solid #10b981;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+}
+
+/* Navigation Buttons */
+.materi-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e5e7eb;
+}
+
+.btn-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.btn-nav-prev {
+    background: #6b7280;
+    color: white;
+}
+
+.btn-nav-prev:hover {
+    background: #4b5563;
+    color: white;
+}
+
+.btn-nav-next {
+    background: #ea580c;
+    color: white;
+}
+
+.btn-nav-next:hover {
+    background: #dc2626;
+    color: white;
+}
+
+/* ===========================
+   DASHBOARD STYLES
+   =========================== */
+.dashboard-header {
+    background: linear-gradient(135deg, #ea580c 0%, #dc2626 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.stat-icon.blue {
+    background: #dbeafe;
+    color: #3b82f6;
+}
+
+.stat-icon.green {
+    background: #dcfce7;
+    color: #10b981;
+}
+
+.stat-icon.yellow {
+    background: #fef3c7;
+    color: #f59e0b;
+}
+
+.stat-icon.purple {
+    background: #f3e8ff;
+    color: #a855f7;
+}
+
+/* ===========================
+   UTILITY CLASSES
+   =========================== */
+.text-orange {
+    color: #ea580c;
+}
+
+.bg-orange {
+    background-color: #ea580c;
+}
+
+.border-orange {
+    border-color: #ea580c;
+}
+
+.btn-orange {
+    background-color: #ea580c;
+    color: white;
+    border: none;
+}
+
+.btn-orange:hover {
+    background-color: #dc2626;
+    color: white;
+}
+
+/* ===========================
+   CHAT WIDGET STYLES
+   =========================== */
+/* Floating Chat Button */
+.chat-toggle-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #0d6efd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chat-toggle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+.chat-toggle-btn svg {
+    width: 28px;
+    height: 28px;
+    color: white;
+}
+
+/* Chat Container - Hidden by default */
+#chat-container {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 400px;
+    max-width: 90vw;
+    height: 550px;
+    max-height: 70vh;
+    display: none;
+    z-index: 9998;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+/* When active/shown */
+#chat-container.active {
+    display: flex !important;
+}
+
+/* Chat window styling */
+#chat-window {
+    padding: 1rem;
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+/* Message styles */
+.message {
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    max-width: 85%;
+}
+
+.message.bot {
+    background-color: #f1f3f5;
+    align-self: flex-start;
+}
+
+.message.user {
+    background-color: #0d6efd;
+    color: white;
+    align-self: flex-end;
+    margin-left: auto;
+}
+
+/* Typing indicator animation */
+.typing-indicator span {
+    animation: blink 1.4s infinite;
+    animation-fill-mode: both;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes blink {
+
+    0%,
+    60%,
+    100% {
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+    }
+}
+
+/* ===========================
+   RESPONSIVE STYLES
+   =========================== */
+@media (max-width: 991px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .materi-container {
+        padding: 1rem;
+    }
+
+    .materi-header {
+        padding: 1.5rem;
+    }
+
+    .materi-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .materi-content {
+        padding: 1.5rem;
+    }
+
+    .materi-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    /* Chat responsive for mobile */
+    #chat-container {
+        width: 100%;
+        height: 50vh;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        max-width: 100%;
+        border-radius: 20px 20px 0 0 !important;
+    }
+
+    #chat-container header {
+        border-radius: 20px 20px 0 0 !important;
+    }
+
+    #chat-container form {
+        border-radius: 0 !important;
+    }
+
+    .chat-toggle-btn {
+        bottom: 15px;
+        right: 15px;
+        width: 55px;
+        height: 55px;
+    }
+}

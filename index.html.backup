@@ -1,0 +1,700 @@
+scrollbar-width: none;
+-ms-overflow-style: none;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+width: 0;
+height: 0;
+}
+
+.code-container {
+position: relative;
+margin: 1rem 0;
+}
+
+.code-container pre {
+margin: 0;
+border-radius: 0.5rem;
+}
+
+.copy-button {
+position: absolute;
+top: 0.5rem;
+right: 0.5rem;
+background: rgba(59, 130, 246, 0.9);
+color: white;
+border: none;
+padding: 0.25rem 0.5rem;
+border-radius: 0.25rem;
+font-size: 0.75rem;
+cursor: pointer;
+transition: background 0.2s;
+}
+
+.copy-button:hover {
+background: rgba(37, 99, 235, 0.9);
+}
+
+.copy-button.copied {
+background: rgba(34, 197, 94, 0.9);
+}
+
+.tutorial-nav {
+position: sticky;
+top: 1rem;
+max-height: calc(100vh - 2rem);
+overflow-y: auto;
+}
+
+.tutorial-content {
+max-width: none;
+}
+
+.example-box {
+background: #f8fafc;
+border: 1px solid #e2e8f0;
+border-radius: 0.5rem;
+padding: 1rem;
+margin: 1rem 0;
+}
+
+.quiz-option {
+cursor: pointer;
+transition: all 0.2s;
+}
+
+.quiz-option:hover {
+background: #f1f5f9;
+}
+
+.quiz-option.selected {
+background: #dbeafe;
+border-color: #3b82f6;
+}
+
+.quiz-option.correct {
+background: #dcfce7;
+border-color: #22c55e;
+}
+
+.quiz-option.incorrect {
+background: #fee2e2;
+border-color: #ef4444;
+}
+
+@media (max-width: 768px) {
+.tutorial-nav {
+position: static;
+max-height: none;
+margin-bottom: 2rem;
+}
+}
+</style>
+</head>
+
+<body class="font-sans antialiased" x-data="mikrotikApp">
+    <div class="min-h-screen bg-gray-50 flex h-screen">
+        <!-- Overlay untuk mobile -->
+        <div x-show="sidebarOpen && !isDesktop" x-transition:enter="transition-opacity ease-linear duration-300"
+            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+            x-transition:leave="transition-opacity ease-linear duration-300" x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-600 bg-opacity-75 z-40"
+            @click="sidebarOpen = false">
+        </div>
+
+        <!-- Sidebar -->
+        <div x-cloak x-show="sidebarOpen" x-transition:enter="transform transition-transform duration-300 ease-in-out"
+            x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
+            x-transition:leave="transform transition-transform duration-300 ease-in-out"
+            x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full"
+            class="fixed inset-y-0 left-0 z-50 w-64 bg-orange-600 text-white flex flex-col lg:relative lg:translate-x-0">
+
+            <!-- Logo -->
+            <div class="flex-shrink-0 flex items-center justify-between p-4">
+                <a href="#" @click="showPage('dashboard')" class="flex items-center">
+                    <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center mr-3">
+                        <span class="text-orange-600 font-bold text-lg">M</span>
+                    </div>
+                    <span class="ml-3 text-xl font-semibold">Mikrotik Learning</span>
+                </a>
+                <button @click="!isDesktop && (sidebarOpen = false)" class="lg:hidden text-white focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 px-4 py-4 overflow-y-auto sidebar-scroll">
+                <a href="#" @click="showPage('dashboard')" :class="currentPage === 'dashboard' ? 'bg-orange-700' : ''"
+                    class="block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-700">
+                    <span class="flex items-center">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                            </path>
+                        </svg>
+                        Dashboard
+                    </span>
+                </a>
+
+                <!-- Pengenalan Mikrotik -->
+                <div x-data="{ open: false }" class="mt-4">
+                    <button @click="open = !open"
+                        class="flex items-center justify-between w-full py-2.5 px-4 rounded transition duration-200 hover:bg-orange-700">
+                        <span class="flex items-center">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                                </path>
+                            </svg>
+                            Pengenalan Mikrotik
+                        </span>
+                        <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    <div x-show="open" x-transition class="mt-2 space-y-2 px-4">
+                        <a href="#" @click="showTutorial('pengenalan-mikrotik')"
+                            class="block py-2 px-4 rounded transition duration-200 hover:bg-orange-700">
+                            Apa itu Mikrotik?
+                        </a>
+                        <a href="#" @click="showTutorial('jenis-produk')"
+                            class="block py-2 px-4 rounded transition duration-200 hover:bg-orange-700">
+                            Jenis-jenis Produk
+                        </a>
+                        <a href="#" @click="showTutorial('instalasi')"
+                            class="block py-2 px-4 rounded transition duration-200 hover:bg-orange-700">
+                            Instalasi Mikrotik
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Konfigurasi Dasar -->
+                <div x-data="{ open: false }" class="mt-4">
+                    <button @click="open = !open"
+                        class="flex items-center justify-between w-full py-2.5 px-4 rounded transition duration-200 hover:bg-orange-700">
+                        <span class="flex items-center">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            Konfigurasi Dasar
+                        </span>
+                        <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="open" x-transition class="mt-2 space-y-2 px-4">
+                        <a href="#" @click="showTutorial('interface-konfigurasi')"
+                            class="block py-2 px-4 rounded transition duration-200 hover:bg-orange-700">
+                            Konfigurasi Interface
+                        </a>
+                        <a href="#" @click="showTutorial('ip-address')"
+                            class="block py-2 px-4 rounded transition duration-200 hover:bg-orange-700">
+                            IP Addressing
+                        </a>
+                        <a href="#" @click="showTutorial('dhcp-server')"
+                            class="block py-2 px-4 rounded transition duration-200 hover:bg-orange-700">
+                            DHCP Server
+                        </a>
+                        <a href="#" @click="showTutorial('nat')"
+                            class="block py-2 px-4 rounded transition duration-200 hover:bg-orange-700">
+                            NAT (Network Address Translation)
+                        </a>
+                        <a href="#" @click="showTutorial('firewall')"
+                            class="block py-2 px-4 rounded transition duration-200 hover:bg-orange-700">
+                            Firewall Dasar
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Wireless -->
+                <div x-data="{ open: false }" class="mt-4">
+                    <button @click="open = !open"
+                        class="flex items-center justify-between w-full py-2.5 px-4 rounded transition duration-200 hover:bg-orange-700">
+                        <span class="flex items-center">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0">
+                                </path>
+                            </svg>
+                            Wireless
+                        </span>
+                        <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div x-show="open" x-transition class="mt-2 space-y-2 px-4">
+                        <a href="#" @click="showTutorial('wireless-basic')"
+                            class="block py-2 px-4 rounded transition duration-200 hover:bg-orange-700">
+                            Wireless Basic
+                        </a>
+                        <a href="#" @click="showTutorial('wireless-security')"
+                            class="block py-2 px-4 rounded transition duration-200 hover:bg-orange-700">
+                            Wireless Security
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quiz -->
+                <a href="#" @click="showPage('quiz')" :class="currentPage === 'quiz' ? 'bg-orange-700' : ''"
+                    class="mt-4 block py-2.5 px-4 rounded transition duration-200 hover:bg-orange-700">
+                    <span class="flex items-center">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
+                            </path>
+                        </svg>
+                        Quiz & Sertifikat
+                    </span>
+                </a>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="flex-shrink-0 p-4 border-t border-orange-700">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="h-10 w-10 rounded-full bg-orange-500 flex items-center justify-center">
+                            <span class="text-lg font-medium text-white">U</span>
+                        </div>
+                    </div>
+                    <div class="ml-3">
+                        <div class="text-base font-medium">User</div>
+                        <div class="text-sm font-medium text-orange-200">Pemula</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Navigation -->
+            <nav class="bg-white shadow-sm">
+                <div class="px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between h-16">
+                        <div class="flex items-center">
+                            <!-- Mobile menu button -->
+                            <button @click="sidebarOpen = !sidebarOpen"
+                                class="lg:hidden text-gray-500 hover:text-gray-700 focus:outline-none">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="flex items-center flex-1 max-w-md mx-4">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-orange-600 h-2 rounded-full transition-all duration-300"
+                                    :style="`width: ${overallProgress}%`"></div>
+                            </div>
+                            <span class="ml-3 text-sm text-gray-600" x-text="`${overallProgress}% Selesai`"></span>
+                        </div>
+
+                        <!-- Profile Dropdown -->
+                        <div class="flex items-center">
+                            <div x-data="{ open: false }" class="ml-3 relative">
+                                <button @click="open = !open"
+                                    class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700">
+                                    <span>User</span>
+                                    <svg class="ml-1 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+
+                                <div x-show="open" x-cloak @click.away="open = false"
+                                    class="z-50 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                                    <div class="py-1">
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            Profile
+                                        </a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            Progress
+                                        </a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            Sertifikat
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Page Content -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50">
+                <!-- Dashboard Page -->
+                <div x-show="currentPage === 'dashboard'" x-cloak class="py-6">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <!-- Header -->
+                        <div
+                            class="bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl shadow-lg mb-8 overflow-hidden">
+                            <div class="p-6 md:flex md:items-center md:justify-between">
+                                <div class="flex items-center mb-6 md:mb-0 space-x-4">
+                                    <div class="flex-shrink-0">
+                                        <div
+                                            class="h-20 w-20 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center ring-4 ring-white/30">
+                                            <span class="text-3xl font-bold text-white">ML</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h1 class="text-3xl font-bold text-white">Mikrotik Learning</h1>
+                                        <p class="text-orange-100">Portal Belajar Mikrotik Dasar & Konfigurasi</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-medium text-orange-200">Progress Pembelajaran</p>
+                                    <p class="text-4xl font-bold text-white" x-text="`${overallProgress}%`"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Stats -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                                <div class="flex items-center">
+                                    <div class="p-3 rounded-xl bg-blue-50">
+                                        <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-gray-500">Total Materi</p>
+                                        <p class="text-2xl font-bold text-gray-800">12</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                                <div class="flex items-center">
+                                    <div class="p-3 rounded-xl bg-green-50">
+                                        <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-gray-500">Selesai</p>
+                                        <p class="text-2xl font-bold text-gray-800" x-text="completedLessons"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                                <div class="flex items-center">
+                                    <div class="p-3 rounded-xl bg-yellow-50">
+                                        <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-gray-500">Waktu Belajar</p>
+                                        <p class="text-2xl font-bold text-gray-800">2.5 jam</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                                <div class="flex items-center">
+                                    <div class="p-3 rounded-xl bg-purple-50">
+                                        <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-medium text-gray-500">Quiz Selesai</p>
+                                        <p class="text-2xl font-bold text-gray-800">3/5</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity -->
+                        <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+                            <h2 class="text-xl font-bold text-gray-800 mb-4">Aktivitas Terbaru</h2>
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <div class="flex-1">
+                                        <p class="text-sm font-medium text-gray-800">Menyelesaikan materi: DHCP Server
+                                        </p>
+                                        <p class="text-xs text-gray-500">2 jam yang lalu</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                                    <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                    <div class="flex-1">
+                                        <p class="text-sm font-medium text-gray-800">Mengerjakan quiz: IP Addressing</p>
+                                        <p class="text-xs text-gray-500">1 hari yang lalu</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                                    <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                    <div class="flex-1">
+                                        <p class="text-sm font-medium text-gray-800">Memulai materi: Pengenalan Mikrotik
+                                        </p>
+                                        <p class="text-xs text-gray-500">2 hari yang lalu</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tutorial Page -->
+                <div x-show="currentPage === 'tutorial'" x-cloak class="py-6">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div x-show="!currentTutorial" class="text-center py-12">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                                </path>
+                            </svg>
+                            <h3 class="mt-2 text-sm font-medium text-gray-900">Pilih materi dari menu di samping</h3>
+                            <p class="mt-1 text-sm text-gray-500">Silakan pilih materi yang ingin dipelajari dari menu
+                                navigasi</p>
+                        </div>
+
+                        <div x-show="currentTutorial" class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                            <!-- Navigation Sidebar -->
+                            <div class="lg:col-span-1">
+                                <div class="tutorial-nav bg-white rounded-xl shadow-md p-4">
+                                    <h3 class="font-semibold text-gray-800 mb-4">Daftar Materi</h3>
+                                    <div class="space-y-2">
+                                        <template x-for="tutorial in tutorials" :key="tutorial.id">
+                                            <a href="#" @click="showTutorial(tutorial.id)"
+                                                :class="currentTutorial?.id === tutorial.id ? 'bg-orange-50 text-orange-600 border-orange-200' : 'hover:bg-gray-50'"
+                                                class="block p-3 rounded-lg border border-gray-200 transition-colors">
+                                                <div class="flex items-center justify-between">
+                                                    <span class="text-sm font-medium" x-text="tutorial.title"></span>
+                                                    <svg x-show="isTutorialCompleted(tutorial.id)"
+                                                        class="w-4 h-4 text-green-500" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                </div>
+                                            </a>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Main Content -->
+                            <div class="lg:col-span-3">
+                                <div x-show="currentTutorial" class="bg-white rounded-xl shadow-md p-6">
+                                    <!-- Tutorial Header -->
+                                    <div class="mb-6">
+                                        <h1 class="text-2xl font-bold text-gray-800 mb-2"
+                                            x-text="currentTutorial?.title"></h1>
+                                        <p class="text-gray-600 mb-4" x-text="currentTutorial?.description"></p>
+                                        <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                            <span class="flex items-center">
+                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                                <span x-text="`${currentTutorial?.readTime || 15} menit`"></span>
+                                            </span>
+                                            <span class="flex items-center">
+                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
+                                                    </path>
+                                                </svg>
+                                                <span x-text="currentTutorial?.level || 'Pemula'"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tutorial Content -->
+                                    <div class="tutorial-content prose max-w-none" x-html="currentTutorial?.content">
+                                    </div>
+
+                                    <!-- Examples Section -->
+                                    <div x-show="currentTutorial?.examples?.length > 0" class="mt-8">
+                                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Contoh Konfigurasi</h3>
+                                        <div class="space-y-4">
+                                            <template x-for="example in currentTutorial.examples" :key="example.id">
+                                                <div class="example-box">
+                                                    <h4 class="font-medium text-gray-800 mb-2" x-text="example.title">
+                                                    </h4>
+                                                    <p class="text-sm text-gray-600 mb-3" x-text="example.description">
+                                                    </p>
+                                                    <div class="code-container">
+                                                        <button @click="copyCode($event, example.code)"
+                                                            class="copy-button">Copy</button>
+                                                        <pre><code class="language-bash" x-text="example.code"></code></pre>
+                                                    </div>
+                                                    <div x-show="example.output" class="mt-3">
+                                                        <p class="text-sm font-medium text-gray-700 mb-1">Output:</p>
+                                                        <div class="bg-gray-900 text-green-400 p-3 rounded text-sm font-mono"
+                                                            x-text="example.output"></div>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+
+                                    <!-- Quiz Section -->
+                                    <div x-show="currentTutorial?.quiz?.length > 0" class="mt-8">
+                                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Quiz</h3>
+                                        <div class="space-y-4">
+                                            <template x-for="(question, index) in currentTutorial.quiz"
+                                                :key="question.id">
+                                                <div class="border border-gray-200 rounded-lg p-4">
+                                                    <p class="font-medium text-gray-800 mb-3">
+                                                        <span x-text="`${index + 1}. ${question.question}`"></span>
+                                                    </p>
+                                                    <div class="space-y-2">
+                                                        <template x-for="option in JSON.parse(question.options)"
+                                                            :key="option">
+                                                            <label
+                                                                class="quiz-option flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer"
+                                                                :class="{
+                                                                       'selected': userAnswers[question.id] === option,
+                                                                       'correct': showResults && option === question.correctAnswer,
+                                                                       'incorrect': showResults && userAnswers[question.id] === option && option !== question.correctAnswer
+                                                                   }">
+                                                                <input type="radio" :name="`question-${question.id}`"
+                                                                    :value="option" x-model="userAnswers[question.id]"
+                                                                    class="mr-3">
+                                                                <span x-text="option"></span>
+                                                            </label>
+                                                        </template>
+                                                    </div>
+                                                    <div x-show="showResults && question.explanation"
+                                                        class="mt-3 p-3 bg-blue-50 rounded-lg">
+                                                        <p class="text-sm text-blue-800" x-text="question.explanation">
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                        <div class="mt-6 flex space-x-4">
+                                            <button @click="checkQuiz()" x-show="!showResults"
+                                                class="px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
+                                                Periksa Jawaban
+                                            </button>
+                                            <button @click="markAsCompleted()" x-show="showResults"
+                                                class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                                Tandai Selesai
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Navigation -->
+                                    <div class="mt-8 pt-6 border-t border-gray-200">
+                                        <div class="flex justify-between">
+                                            <button @click="navigateTutorial('prev')" x-show="currentTutorialIndex > 0"
+                                                class="flex items-center px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
+                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                                </svg>
+                                                Materi Sebelumnya
+                                            </button>
+                                            <button @click="navigateTutorial('next')"
+                                                x-show="currentTutorialIndex < tutorials.length - 1"
+                                                class="flex items-center px-4 py-2 text-orange-600 hover:text-orange-700 transition-colors">
+                                                Materi Selanjutnya
+                                                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Page -->
+                <div x-show="currentPage === 'quiz'" x-cloak class="py-6">
+                    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="bg-white rounded-xl shadow-md p-6">
+                            <h1 class="text-2xl font-bold text-gray-800 mb-6">Quiz & Sertifikat</h1>
+
+                            <div class="space-y-6">
+                                <!-- Quiz Cards -->
+                                <template x-for="quiz in allQuizzes" :key="quiz.id">
+                                    <div
+                                        class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h3 class="font-semibold text-gray-800" x-text="quiz.title"></h3>
+                                                <p class="text-sm text-gray-600 mt-1" x-text="quiz.description"></p>
+                                                <div class="flex items-center mt-2 space-x-4 text-sm text-gray-500">
+                                                    <span x-text="`${quiz.questions.length} soal`"></span>
+                                                    <span x-text="`${quiz.duration} menit`"></span>
+                                                </div>
+                                            </div>
+                                            <button @click="startQuiz(quiz.id)"
+                                                class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
+                                                Mulai Quiz
+                                            </button>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <!-- Certificate Section -->
+                                <div
+                                    class="mt-8 p-6 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg border border-orange-200">
+                                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Sertifikat Kelulusan</h3>
+                                    <p class="text-gray-600 mb-4">Selesaikan semua quiz dengan nilai minimal 70% untuk
+                                        mendapatkan sertifikat.</p>
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="text-sm text-gray-500">Progress Quiz</p>
+                                            <p class="text-2xl font-bold text-orange-600"
+                                                x-text="`${quizProgress}/5 Selesai`"></p>
+                                        </div>
+                                        <button x-show="quizProgress === 5"
+                                            class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                            Download Sertifikat
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

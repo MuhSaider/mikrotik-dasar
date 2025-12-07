@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mikrotik Learning - Portal Belajar Mikrotik Dasar</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="d-flex align-items-center">
+                <div class="logo-box">
+                    <span>M</span>
+                </div>
+                <h5 class="mb-0 ms-2">Mikrotik Learning</h5>
+            </div>
+            <button class="btn-close-sidebar d-lg-none" onclick="toggleSidebar()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-link">
+                <i class="bi bi-house-door"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <!-- Pengenalan Mikrotik -->
+            <div class="nav-section">
+                <button class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#pengenalanMenu">
+                    <i class="bi bi-book"></i>
+                    <span>Pengenalan Mikrotik</span>
+                </button>
+                <div class="collapse" id="pengenalanMenu">
+                    <a href="materi/pengenalan-mikrotik.html" class="nav-link sub-link">Apa itu Mikrotik?</a>
+                    <a href="materi/jenis-produk.html" class="nav-link sub-link">Jenis-jenis Produk</a>
+                    <a href="materi/instalasi.html" class="nav-link sub-link">Instalasi Mikrotik</a>
+                </div>
+            </div>
+
+            <!-- Konfigurasi Dasar -->
+            <div class="nav-section">
+                <button class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#konfigurasiMenu">
+                    <i class="bi bi-gear"></i>
+                    <span>Konfigurasi Dasar</span>
+                </button>
+                <div class="collapse" id="konfigurasiMenu">
+                    <a href="materi/interface-konfigurasi.html" class="nav-link sub-link">Konfigurasi Interface</a>
+                    <a href="materi/ip-address.html" class="nav-link sub-link">IP Addressing</a>
+                    <a href="materi/dhcp-server.html" class="nav-link sub-link">DHCP Server</a>
+                    <a href="materi/nat.html" class="nav-link sub-link">NAT</a>
+                    <a href="materi/firewall.html" class="nav-link sub-link">Firewall Dasar</a>
+                </div>
+            </div>
+
+            <!-- Wireless -->
+            <div class="nav-section">
+                <button class="nav-link dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#wirelessMenu">
+                    <i class="bi bi-wifi"></i>
+                    <span>Wireless</span>
+                </button>
+                <div class="collapse" id="wirelessMenu">
+                    <a href="materi/wireless-basic.html" class="nav-link sub-link">Wireless Basic</a>
+                    <a href="materi/wireless-security.html" class="nav-link sub-link">Wireless Security</a>
+                </div>
+            </div>
+
+            <!-- Quiz -->
+            <a href="quiz.html" class="nav-link">
+                <i class="bi bi-clipboard-check"></i>
+                <span>Quiz & Sertifikat</span>
+            </a>
+        </nav>
+
+        <!-- User Profile -->
+        <div class="sidebar-footer">
+            <div class="d-flex align-items-center">
+                <div class="user-avatar">U</div>
+                <div class="ms-3">
+                    <div class="user-name">User</div>
+                    <div class="user-level">Pemula</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navigation -->
+        <nav class="navbar navbar-light bg-white border-bottom ">
+            <div class="container-fluid">
+                <button class="btn btn-link d-lg-none" onclick="toggleSidebar()">
+                    <i class="bi bi-list fs-4"></i>
+                </button>
+
+                <div class="d-flex align-items-center flex-grow-1 mx-4">
+                    <div class="progress flex-grow-1" style="height: 8px;">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: 0%" id="progressBar">0%
+                        </div>
+                    </div>
+                    <span class="ms-3 text-muted small" id="progressText">0% Selesai</span>
+                </div>
+
+                <div class="dropdown">
+                    <button class="btn btn-link dropdown-toggle" data-bs-toggle="dropdown">
+                        User
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Progress</a></li>
+                        <li><a class="dropdown-item" href="#">Sertifikat</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid p-4">
+            <!-- Header -->
+            <div class="dashboard-header mb-4">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <div class="d-flex align-items-center">
+                            <div class="me-3">
+                                <div
+                                    style="width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold;">
+                                    ML
+                                </div>
+                            </div>
+                            <div>
+                                <h1 class="mb-1">Mikrotik Learning</h1>
+                                <p class="mb-0 opacity-75">Portal Belajar Mikrotik Dasar & Konfigurasi</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                        <p class="mb-1 small opacity-75">Progress Pembelajaran</p>
+                        <h2 class="mb-0" id="dashboardProgress">0%</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card">
+                        <div class="d-flex align-items-center">
+                            <div class="stat-icon blue">
+                                <i class="bi bi-book"></i>
+                            </div>
+                            <div class="ms-3">
+                                <p class="text-muted mb-1 small">Total Materi</p>
+                                <h4 class="mb-0">10</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card">
+                        <div class="d-flex align-items-center">
+                            <div class="stat-icon green">
+                                <i class="bi bi-check-circle"></i>
+                            </div>
+                            <div class="ms-3">
+                                <p class="text-muted mb-1 small">Selesai</p>
+                                <h4 class="mb-0" id="completedCount">0</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card">
+                        <div class="d-flex align-items-center">
+                            <div class="stat-icon yellow">
+                                <i class="bi bi-clock"></i>
+                            </div>
+                            <div class="ms-3">
+                                <p class="text-muted mb-1 small">Waktu Belajar</p>
+                                <h4 class="mb-0">2.5 jam</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card">
+                        <div class="d-flex align-items-center">
+                            <div class="stat-icon purple">
+                                <i class="bi bi-clipboard-check"></i>
+                            </div>
+                            <div class="ms-3">
+                                <p class="text-muted mb-1 small">Quiz Selesai</p>
+                                <h4 class="mb-0">0/5</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="card-title mb-4">Aktivitas Terbaru</h5>
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item px-0">
+                            <div class="d-flex align-items-center">
+                                <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%;"></div>
+                                <div class="ms-3 flex-grow-1">
+                                    <p class="mb-0 fw-medium">Mulai belajar Mikrotik</p>
+                                    <small class="text-muted">Hari ini</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Start Guide -->
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-body p-4">
+                    <h5 class="card-title mb-3">Panduan Cepat</h5>
+                    <ol class="mb-0">
+                        <li class="mb-2">Mulai dari menu <strong>"Pengenalan Mikrotik"</strong> untuk memahami
+                            dasar-dasar
+                        </li>
+                        <li class="mb-2">Lanjutkan ke <strong>"Konfigurasi Dasar"</strong> untuk praktek hands-on</li>
+                        <li class="mb-2">Pelajari <strong>"Wireless"</strong> untuk konfigurasi WiFi</li>
+                        <li class="mb-0">Uji pemahaman Anda dengan <strong>"Quiz"</strong> di setiap akhir materi</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-body p-4">
+                    <h5 class="card-title mb-3">Panduan Cepat</h5>
+                    <ol class="mb-0">
+                        <li class="mb-2">Mulai dari menu <strong>"Pengenalan Mikrotik"</strong> untuk memahami
+                            dasar-dasar
+                        </li>
+                        <li class="mb-2">Lanjutkan ke <strong>"Konfigurasi Dasar"</strong> untuk praktek hands-on</li>
+                        <li class="mb-2">Pelajari <strong>"Wireless"</strong> untuk konfigurasi WiFi</li>
+                        <li class="mb-0">Uji pemahaman Anda dengan <strong>"Quiz"</strong> di setiap akhir materi</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-body p-4">
+                    <h5 class="card-title mb-3">Panduan Cepat</h5>
+                    <ol class="mb-0">
+                        <li class="mb-2">Mulai dari menu <strong>"Pengenalan Mikrotik"</strong> untuk memahami
+                            dasar-dasar
+                        </li>
+                        <li class="mb-2">Lanjutkan ke <strong>"Konfigurasi Dasar"</strong> untuk praktek hands-on</li>
+                        <li class="mb-2">Pelajari <strong>"Wireless"</strong> untuk konfigurasi WiFi</li>
+                        <li class="mb-0">Uji pemahaman Anda dengan <strong>"Quiz"</strong> di setiap akhir materi</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chat Button -->
+    <div class="chat-toggle-btn" id="chatToggleBtn">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M8 10h.01M12 10h.01M16 10h.01M9 16h6m2 5H7a5 5 0 01-5-5V8a5 5 0 015-5h10a5 5 0 015 5v8a5 5 0 01-5 5z" />
+        </svg>
+    </div>
+    <div id="chat-container" class="bg-white shadow-lg rounded-4 flex-column chat-container">
+
+        <!-- Header -->
+        <header class="p-3 border-bottom bg-orange text-white rounded-top-4 d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="me-2" style="width: 24px; height: 24px;">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.035-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z" />
+            </svg>
+            <h1 class="h5 mb-0">Asisten Chat</h1>
+        </header>
+
+        <!-- Jendela Chat -->
+        <div id="chat-window" class="d-flex flex-grow-1 flex-column-reverse">
+            <div class="message bot">
+                <p class="mb-0">Halo! Saya adalah Asisten Chatbot Tanyakan apa saja tentang mikrotik, saya siap bantu!
+                </p>
+            </div>
+        </div>
+
+        <!-- Indikator Loading -->
+        <div id="loading-indicator" class="message bot mx-3 mb-2 d-none typing-indicator">
+            <span class="fs-5">.</span>
+            <span class="fs-5">.</span>
+            <span class="fs-5">.</span>
+        </div>
+
+        <!-- Form -->
+        <form id="chat-form" class="p-3 border-top bg-light rounded-bottom-4">
+            <div class="input-group">
+                <input type="text" id="user-input" placeholder="Ketik pesan Anda di sini..."
+                    class="form-control rounded-pill-start py-2 px-3" required />
+                <button type="submit" id="send-button"
+                    class="btn btn-primary rounded-pill-end shadow-sm d-flex align-items-center justify-content-center"
+                    style="width: 50px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" style="width: 24px; height: 24px;">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+                    </svg>
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="app.js"></script>
+</body>
+
+</html>
