@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // API Key yang Anda berikan
 // PENTING: Dalam aplikasi nyata, API Key ini HARUS disimpan di server,
 // BUKAN di kode frontend. Namun, untuk demo sederhana ini, kita letakkan di sini.
-const API_KEY = "AIzaSyBQtHe6v6yLRDGsEfvSUfAkQPcfI9GdhrU";
+const API_KEY = "AIzaSyA1S3nfzi6C0xLcZe8oejFZh9d5SDXXy0k";
 
 // URL Endpoint Gemini API
 // Kita menggunakan model gemini-2.5-flash-preview-09-2025 untuk performa cepat.
